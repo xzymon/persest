@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="1" key="org.eclipse.egit.ui.internal.clone.GitSelectWizardPageWizardSel"/>
+	<list key="RepositorySelectionPage.UsedUris">
+		<item value="https://github.com/xzymon/persest.git"/>
+		<item value="https://github.com/xzymon/vipro"/>
+		<item value="https://github.com/jboss-developer/jboss-eap-quickstarts.git"/>
+		<item value="https://github.com/xzymon/XCrawler.git"/>
+		<item value="https://github.com/xzymon/xpath-searcher.git"/>
+	</list>
+	<section name="GitImportWizard">
+		<item value="true" key="GitProjectsImportPage.STORE_NESTED_PROJECTS"/>
+	</section>
+</section>

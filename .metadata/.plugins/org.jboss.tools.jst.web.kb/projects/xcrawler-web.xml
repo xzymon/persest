@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kb-project>
+ <depends-on-projects/>
+ <used-by-projects/>
+ <paths>
+  <path value="/var/www/html/mvn/javax/validation/validation-api/1.0.0.GA-redhat-2/validation-api-1.0.0.GA-redhat-2.jar"/>
+  <path value="/var/www/html/mvn/javax/inject/javax.inject/1.redhat-4/javax.inject-1.redhat-4.jar"/>
+  <path value="/var/www/html/mvn/org/jboss/logging/jboss-logging/3.1.2.GA-redhat-1/jboss-logging-3.1.2.GA-redhat-1.jar"/>
+  <path value="/var/www/html/mvn/org/hibernate/hibernate-validator/4.3.1.Final-redhat-1/hibernate-validator-4.3.1.Final-redhat-1.jar"/>
+  <path value="/xcrawler-web/src/main/webapp/WEB-INF/faces-config.xml">
+   <libraries>
+    <library class="faces-config">
+     <id class="model-object"
+      path="FileSystems/WEB-INF/faces-config.xml" project="xcrawler-web"/>
+    </library>
+   </libraries>
+  </path>
+  <path value="/var/www/html/mvn/org/jboss/spec/javax/faces/jboss-jsf-api_2.1_spec/2.1.28.Final-redhat-1/jboss-jsf-api_2.1_spec-2.1.28.Final-redhat-1.jar"/>
+  <path value="/var/www/html/mvn/org/jboss/spec/javax/ws/rs/jboss-jaxrs-api_1.1_spec/1.0.1.Final-redhat-2/jboss-jaxrs-api_1.1_spec-1.0.1.Final-redhat-2.jar"/>
+  <path value="/var/www/html/mvn/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.1.Final-redhat-2/hibernate-jpa-2.0-api-1.0.1.Final-redhat-2.jar"/>
+  <path value="/var/www/html/mvn/javax/enterprise/cdi-api/1.0-SP4-redhat-4/cdi-api-1.0-SP4-redhat-4.jar"/>
+  <path value="/var/www/html/mvn/org/jboss/spec/javax/annotation/jboss-annotations-api_1.1_spec/1.0.1.Final-redhat-2/jboss-annotations-api_1.1_spec-1.0.1.Final-redhat-2.jar"/>
+  <path value="/var/www/html/mvn/org/jboss/spec/javax/interceptor/jboss-interceptors-api_1.1_spec/1.0.1.Final-redhat-2/jboss-interceptors-api_1.1_spec-1.0.1.Final-redhat-2.jar"/>
+ </paths>
+ <validation>
+  <core validator-id="jsf-verification"/>
+  <core validator-id="jboss.cdi.core"/>
+  <core validator-id="jboss.jsf.core"/>
+  <el/>
+ </validation>
+ <aliases/>
+ <includes/>
+ <uris/>
+</kb-project>
