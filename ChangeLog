@@ -1,0 +1,11 @@
+v 0.0.1
++ can connect to MySQL persest database using DataSource injected with Dependency Injection @Resource
++ model.Category to keep data collected with JDBC ResultSet
++ /AppStateOutputServlet - outputs app inner state:
+	- URL
+	- headers
+	- cookies
+	- attributes: servletContext, session, request
++ /CategoryServlet 
+	- shows table persest.kategorie
+	- allows to add new rows to persest.kategorie
