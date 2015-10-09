@@ -59,9 +59,19 @@ public class CategoryServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		String ncn = request.getParameter("ncn");
 		String ncc = request.getParameter("ncc");
+		String dc = request.getParameter("dc");
 		
 		if(ncn!=null && ncn!="" && ncc!=null && ncc!=""){
 			addCategory(ncn, ncc);
+		}
+		
+		if(dc!=null && dc!=""){
+			try{
+				Long ldc = Long.decode(dc);
+				deleteCategory(ldc);
+			} catch (NumberFormatException ex){
+				
+			}
 		}
 		
 		List<Category> categories = getCategories();
@@ -142,6 +152,30 @@ public class CategoryServlet extends HttpServlet {
 		}
 		
 		return result;
+	}
+	
+	private void deleteCategory(Long categoryId){
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement("DELETE FROM kategorie WHERE id_kategorii=?");
+			pstmt.setLong(1, categoryId);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if(conn!=null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 }

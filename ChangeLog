@@ -1,3 +1,11 @@
+v 0.0.2
++ /WEB-INF/consumption.jsp + /ConsumptionServlet + model.Consumption <- persest.konsumpcja_realna
++ /WEB-INF/mockConsumption.jsp + /MockConsumptionServlet + model.MockConsumption <- persest.konsumpcja_wirtualna
++ /WEB-INF/products.jsp + /ProductServlet + model.Product <- persest.produkty
++ /WEB-INF/purchases.jsp + /PurchaseServlet + model.Purchase <- persest.zakupione_produkty
++ /WEB-INF/stores.jsp + /StoreServlet + model.Store <- persest.sklepy
++ /WEB-INF/unit.jsp + /UnitServlet + model.Unit <- persest.jednostki_produktu
+
 v 0.0.1
 + can connect to MySQL persest database using DataSource injected with Dependency Injection @Resource
 + model.Category to keep data collected with JDBC ResultSet

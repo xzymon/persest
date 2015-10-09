@@ -4,27 +4,31 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Categories</title>
+	<title>Stores</title>
 </head>
 <body>
-<h1>Categories</h1>
+<h1>Stores</h1>
 <table>
 	<thead>
 		<tr>
 			<th>id</th>
 			<th>name</th>
-			<th>code</th>
+			<th>city</th>
+			<th>street</th>
+			<th>number</th>
 		</tr>
 	</thead>
 	<tbody>
-		<c:forEach var="category" items="${requestScope.categories}">
+		<c:forEach var="store" items="${requestScope.stores}">
 		<tr>
-			<td>${category.id}</td>
-			<td>${category.name}</td>
-			<td>${category.code}</td>
+			<td>${store.id}</td>
+			<td>${store.name}</td>
+			<td>${store.city}</td>
+			<td>${store.street}</td>
+			<td>${store.number}</td>
 			<td>
 				<form method="post" action="">
-					<input type="hidden" name="dc" value="${category.id}">
+					<input type="hidden" name="ds" value="${store.id}">
 					<input type="submit" value="Delete">
 				</form>
 			</td>
@@ -44,14 +48,23 @@
 	<table>
 		<tr>
 			<td>Name:</td>
-			<td><input type="text" name="ncn"></td>
+			<td><input type="text" name="nsn"></td>
 		</tr>
 		<tr>
-			<td>Code:</td>
-			<td><input type="text" name="ncc"></td>
+			<td>City:</td>
+			<td><input type="text" name="nsc"></td>
+		</tr>
+		<tr>
+			<td>Street:</td>
+			<td><input type="text" name="nss"></td>
+		</tr>
+		<tr>
+			<td>Number:</td>
+			<td><input type="text" name="nsb"></td>
 		</tr>
 	</table>
 	<input type="submit" value="Send">
 </form>
 </body>
+</html>
 </html>

@@ -1,0 +1,10 @@
+Jak tworzyć profesjonalny kod do obsługi JDBC?
+-> gdzie/czy deklarować zmienne(które)?
+
+Kod ładujący z bazy danych powinien być wyodrębniony z servletów ponieważ:
+	- jeżeli dla CRUD mam 1 servlet/tabelę bd to kod się nie pokrywa ale, jeśli w servlecie zajdzie potrzeba załadowania więcej tabel to kod obsługujący tabelę najpewniej zostanie już powielony a przecież warto stosować DRY
+		-> patrz przykład /ProductServlet
+		
+Sprawić, by tam gdzie jest to możliwe wyświetlane tabele nie zawierały kluczy obcych tylko jakąś human-readable informację o obiekcie
+	- np. zamiast wyświetlać wartość productId niech wyświetla nazwę produktu
+		-> narazie zrealizować to tak: pobierać pełne obiekty dla incydentnych tabel, mapować je jako mapę id->obiekt i podpinać przez id obiekt tam gdzie jest jego id - czyli zrealizować mniej-więcej jako n+1 selects

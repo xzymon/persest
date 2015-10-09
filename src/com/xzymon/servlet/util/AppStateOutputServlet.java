@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
@@ -77,9 +78,15 @@ public class AppStateOutputServlet extends HttpServlet {
 		stateBean.setSessionAttributes(getSessionAttributes(request));
 		stateBean.setRequestAttributes(getRequestAttributes(request));
 		
+		stateBean.setParameters(getParameters(request));
+		
 		request.setAttribute("stateBean", stateBean);
 		
 		request.getRequestDispatcher("/WEB-INF/state.jsp").forward(request, response);
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
 	}
 
 	public List<AttributeInfo> getApplicationAttributes(HttpServletRequest request){
@@ -185,5 +192,9 @@ public class AppStateOutputServlet extends HttpServlet {
 		u.setServletPath(request.getServletPath());
 		u.setQueryString(request.getQueryString());
 		return u;
+	}
+	
+	public Map<String, String[]> getParameters(HttpServletRequest request){
+		return request.getParameterMap();
 	}
 }

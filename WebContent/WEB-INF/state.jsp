@@ -90,26 +90,7 @@
 		</tbody>
 	</table>
 	<h2>Attributes</h2>
-	<h3>Application (ServletContext)</h3>
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Value</th>
-				<th>Class</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach var="attr" items="${requestScope.stateBean.applicationAttributes}">
-			<tr>
-				<td>${attr.name}</td>
-				<td>${attr.getValueAsStringWithMaxLengthFiltering(200)}</td>
-				<td>${attr.runtimeType}</td>
-			</tr>
-			</c:forEach>
-		</tbody>
-		<tfoot></tfoot>
-	</table>
+	
 	<h3>Session</h3>
 	<table class="table table-striped">
 		<thead>
@@ -150,5 +131,46 @@
 		</tbody>
 		<tfoot></tfoot>
 	</table>
+	<h3>Parameters</h3>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Value(s)</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="par" items="${requestScope.stateBean.parameters.entrySet()}">
+			<tr>
+				<td>${par.key}</td>
+				<td><c:forEach var="value" items="${par.value}">[${value}]</c:forEach></td>
+			</tr>
+			</c:forEach>
+		</tbody>
+		<tfoot></tfoot>
+	</table>
+	
+	<!-- 
+	<h3>Application (ServletContext)</h3>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Value</th>
+				<th>Class</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="attr" items="${requestScope.stateBean.applicationAttributes}">
+			<tr>
+				<td>${attr.name}</td>
+				<td>${attr.getValueAsStringWithMaxLengthFiltering(200)}</td>
+				<td>${attr.runtimeType}</td>
+			</tr>
+			</c:forEach>
+		</tbody>
+		<tfoot></tfoot>
+	</table>
+	 -->
 </body>
 </html>

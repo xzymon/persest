@@ -1,6 +1,7 @@
 package com.xzymon.servlet.util;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 
@@ -9,6 +10,7 @@ public class StateBean {
 	private URLParts urlParts;
 	private List<Cookie> cookies;
 	private List<AttributeInfo> requestAttributes, sessionAttributes, applicationAttributes;
+	private Map<String, String[]> parameters;
 	
 	public List<Header> getHeaders() {
 		return headers;
@@ -57,6 +59,12 @@ public class StateBean {
 	public void setApplicationAttributes(List<AttributeInfo> applicationAttributes) {
 		this.applicationAttributes = applicationAttributes;
 	}
-	
-	
+
+	public Map<String, String[]> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(Map<String, String[]> parameters) {
+		this.parameters = parameters;
+	}
 }

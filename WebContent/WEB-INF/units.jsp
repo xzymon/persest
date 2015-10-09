@@ -4,10 +4,10 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Categories</title>
+	<title>Units</title>
 </head>
 <body>
-<h1>Categories</h1>
+<h1>Units</h1>
 <table>
 	<thead>
 		<tr>
@@ -17,14 +17,14 @@
 		</tr>
 	</thead>
 	<tbody>
-		<c:forEach var="category" items="${requestScope.categories}">
+		<c:forEach var="unit" items="${requestScope.units}">
 		<tr>
-			<td>${category.id}</td>
-			<td>${category.name}</td>
-			<td>${category.code}</td>
+			<td>${unit.id}</td>
+			<td>${unit.name}</td>
+			<td>${unit.code}</td>
 			<td>
 				<form method="post" action="">
-					<input type="hidden" name="dc" value="${category.id}">
+					<input type="hidden" name="du" value="${unit.id}">
 					<input type="submit" value="Delete">
 				</form>
 			</td>
@@ -44,11 +44,11 @@
 	<table>
 		<tr>
 			<td>Name:</td>
-			<td><input type="text" name="ncn"></td>
+			<td><input type="text" name="nun"></td>
 		</tr>
 		<tr>
 			<td>Code:</td>
-			<td><input type="text" name="ncc"></td>
+			<td><input type="text" name="nuc"></td>
 		</tr>
 	</table>
 	<input type="submit" value="Send">
