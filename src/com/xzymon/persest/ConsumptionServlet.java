@@ -23,7 +23,7 @@ import javax.sql.DataSource;
 import com.xzymon.persest.model.Consumption;
 import com.xzymon.persest.model.MockConsumption;
 import com.xzymon.persest.model.Product;
-import com.xzymon.persest.model.PurchasedProduct;
+import com.xzymon.persest.model.Purchase;
 import com.xzymon.persest.model.Store;
 
 /**
@@ -73,24 +73,12 @@ public class ConsumptionServlet extends HttpServlet {
 				Integer i_ncden = Integer.decode(ncden);
 				
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-				Date d_npd = new Date(dateFormat.parse(ncd).getTime());
+				Date d_ncd = new Date(dateFormat.parse(ncd).getTime());
 				
-					conn = ds.getConnection();
-					PreparedStatement pstmt = conn.prepareStatement("INSERT INTO konsumpcja_realna(id_zakupu, licznik_skonsumowanej_czesci, mianownik_skonsumowanej_czesci, uwagi, data) VALUES(?, ?, ?, ?, ?)");
-					pstmt.setLong(1, l_ncp);
-					pstmt.setLong(2, i_ncnum);
-					pstmt.setLong(3, i_ncden);
-					pstmt.setString(4, ncc);
-					pstmt.setDate(5, d_npd);
-					pstmt.executeUpdate();
-				
-				
+				addConsumption(l_ncp, i_ncnum, i_ncden, ncc, d_ncd);
 			} catch (NumberFormatException ex){
 				ex.printStackTrace();
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
@@ -154,18 +142,43 @@ public class ConsumptionServlet extends HttpServlet {
 		return results;
 	}
 	
-	private List<PurchasedProduct> getPurchases(){
-		List<PurchasedProduct> results = new LinkedList<PurchasedProduct>();
+	public void addConsumption(Long purchaseId, Integer consumedNumerator, Integer consumedDenominator, String comment, Date date){
+		Connection conn = null;
+		
+		try{
+			conn = ds.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("INSERT INTO konsumpcja_realna(id_zakupu, licznik_skonsumowanej_czesci, mianownik_skonsumowanej_czesci, uwagi, data) VALUES(?, ?, ?, ?, ?)");
+			pstmt.setLong(1, purchaseId);
+			pstmt.setInt(2, consumedNumerator);
+			pstmt.setInt(3, consumedDenominator);
+			pstmt.setString(4, comment);
+			pstmt.setDate(5, date);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if(conn!=null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	private List<Purchase> getPurchases(){
+		List<Purchase> results = new LinkedList<Purchase>();
 		
 		Connection conn = null;
 		
 		try {
 			conn = ds.getConnection();
 			Statement stmt = conn.createStatement();
-			PurchasedProduct pp = null;
+			Purchase pp = null;
 			ResultSet rs = stmt.executeQuery("SELECT id_zakupu, id_produkt, id_sklepu, cena_calk, cena_ulamk, uwagi, data FROM zakupione_produkty");
 			while(rs.next()){
-				pp = new PurchasedProduct();
+				pp = new Purchase();
 				pp.setId(rs.getLong(1));
 				pp.setProductId(rs.getLong(2));
 				pp.setStoreId(rs.getLong(3));

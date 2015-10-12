@@ -14,6 +14,7 @@
 			<th>id</th>
 			<th>name</th>
 			<th>code</th>
+			<th>quantity denominator</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -22,6 +23,7 @@
 			<td>${unit.id}</td>
 			<td>${unit.name}</td>
 			<td>${unit.code}</td>
+			<td>${unit.quantityDenominator}</td>
 			<td>
 				<form method="post" action="">
 					<input type="hidden" name="du" value="${unit.id}">
@@ -33,6 +35,7 @@
 	</tbody>
 	<tfoot>
 		<tr>
+			<td></td>
 			<td></td>
 			<td></td>
 			<td></td>
@@ -49,6 +52,10 @@
 		<tr>
 			<td>Code:</td>
 			<td><input type="text" name="nuc"></td>
+		</tr>
+		<tr>
+			<td>Quantity Denominator:</td>
+			<td><input type="number" name="nuqd" min="1" step="1"></td>
 		</tr>
 	</table>
 	<input type="submit" value="Send">

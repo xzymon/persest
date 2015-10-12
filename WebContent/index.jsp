@@ -9,6 +9,14 @@
 </head>
 <body>
 <h1>Hello from PersEst</h1>
-this is static content!
+<ul>
+<li><a href="CategoryServlet">category</a></li>
+<li><a href="ConsumptionServlet">consumption</a></li>
+<li><a href="MockConsumptionServlet">mock consumption</a></li>
+<li><a href="ProductServlet">product</a></li>
+<li><a href="PurchaseServlet">purchase</a></li>
+<li><a href="StoreServlet">store</a></li>
+<li><a href="UnitServlet">unit</a></li>
+</ul>
 </body>
 </html>

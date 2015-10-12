@@ -31,5 +31,4 @@ public class Product {
 		this.unitId = unitId;
 	}
 	
-	
 }

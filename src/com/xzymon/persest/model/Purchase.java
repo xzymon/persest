@@ -2,7 +2,7 @@ package com.xzymon.persest.model;
 
 import java.sql.Date;
 
-public class PurchasedProduct {
+public class Purchase {
 	private Long id;
 	private Long productId;
 	private Long storeId;

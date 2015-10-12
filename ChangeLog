@@ -1,3 +1,6 @@
+v 0.0.3
+
+
 v 0.0.2
 + /WEB-INF/consumption.jsp + /ConsumptionServlet + model.Consumption <- persest.konsumpcja_realna
 + /WEB-INF/mockConsumption.jsp + /MockConsumptionServlet + model.MockConsumption <- persest.konsumpcja_wirtualna

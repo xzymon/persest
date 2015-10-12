@@ -22,8 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import com.xzymon.persest.model.Product;
-import com.xzymon.persest.model.PurchasedProduct;
+import com.xzymon.persest.model.Purchase;
 import com.xzymon.persest.model.Store;
+import com.xzymon.persest.model.Unit;
 
 /**
  * Servlet implementation class PurchaseServlet
@@ -49,6 +50,7 @@ public class PurchaseServlet extends HttpServlet {
 		request.setAttribute("purchases", getPurchasedProducts());
 		request.setAttribute("products", getProducts());
 		request.setAttribute("stores", getStores());
+		request.setAttribute("units", getUnits());
 		
 		request.getRequestDispatcher("/WEB-INF/purchases.jsp").forward(request, response);
 	}
@@ -64,8 +66,6 @@ public class PurchaseServlet extends HttpServlet {
 		String npd = request.getParameter("npd");
 		String dp = request.getParameter("dp");
 		
-		Connection conn = null;
-		
 		if(np!=null && np!="" && nps!=null && nps!="" && npp!=null && npp!="" && npd!=null && npd!=""){
 			try{
 				Long l_np = Long.decode(np);
@@ -74,7 +74,7 @@ public class PurchaseServlet extends HttpServlet {
 				Integer intPrice;
 				String[] split = null;
 				if(npp.contains(".")){
-					split = npp.split(".");
+					split = npp.split("\\.");
 				} else {
 					split = new String[]{npp};
 				}
@@ -82,38 +82,17 @@ public class PurchaseServlet extends HttpServlet {
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 				Date d_npd = new Date(dateFormat.parse(npd).getTime());
 				
-					intPrice = Integer.decode(split[0]);
-					if(split.length>1){
-						centPrice = Short.decode(split[1]);
-					}
-					conn = ds.getConnection();
-					PreparedStatement pstmt = conn.prepareStatement("INSERT INTO zakupione_produkty(id_produkt, id_sklepu, cena_calk, cena_ulamk, uwagi, data) VALUES(?, ?, ?, ?, ?, ?)");
-					pstmt.setLong(1, l_np);
-					pstmt.setLong(2, l_nps);
-					pstmt.setInt(3, intPrice);
-					pstmt.setShort(4, centPrice);
-					pstmt.setString(5, npc);
-					pstmt.setDate(6, d_npd);
-					pstmt.executeUpdate();
+				intPrice = Integer.decode(split[0]);
+				if(split.length>1){
+					centPrice = Short.decode(split[1]);
+				}
 				
-				
+				addPurchasedProduct(l_np, l_nps, intPrice, centPrice, npc, d_npd);
 			} catch (NumberFormatException ex){
 				ex.printStackTrace();
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-				if(conn!=null){
-					try {
-						conn.close();
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
 			}
 		}
 		
@@ -129,18 +108,18 @@ public class PurchaseServlet extends HttpServlet {
 		doGet(request, response);
 	}
 
-	private List<PurchasedProduct> getPurchasedProducts(){
-		List<PurchasedProduct> results = new LinkedList<PurchasedProduct>();
+	private List<Purchase> getPurchasedProducts(){
+		List<Purchase> results = new LinkedList<Purchase>();
 		
 		Connection conn = null;
 		
 		try {
 			conn = ds.getConnection();
 			Statement stmt = conn.createStatement();
-			PurchasedProduct pp = null;
+			Purchase pp = null;
 			ResultSet rs = stmt.executeQuery("SELECT id_zakupu, id_produkt, id_sklepu, cena_calk, cena_ulamk, uwagi, data FROM zakupione_produkty");
 			while(rs.next()){
-				pp = new PurchasedProduct();
+				pp = new Purchase();
 				pp.setId(rs.getLong(1));
 				pp.setProductId(rs.getLong(2));
 				pp.setStoreId(rs.getLong(3));
@@ -165,6 +144,36 @@ public class PurchaseServlet extends HttpServlet {
 		}
 		
 		return results;
+	}
+	
+	public void addPurchasedProduct(Long productId, Long storeId, Integer intPrice, Short centPrice, String comment, Date date){
+		Connection conn = null;
+		
+		try{
+			conn = ds.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("INSERT INTO zakupione_produkty(id_produkt, id_sklepu, cena_calk, cena_ulamk, uwagi, data) VALUES(?, ?, ?, ?, ?, ?)");
+			pstmt.setLong(1, productId);
+			pstmt.setLong(2, storeId);
+			pstmt.setInt(3, intPrice);
+			pstmt.setShort(4, centPrice);
+			pstmt.setString(5, comment);
+			pstmt.setDate(6, date);
+			pstmt.executeUpdate();
+				
+				
+		} catch (NumberFormatException ex){
+			ex.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if(conn!=null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	public List<Store> getStores(){
@@ -261,5 +270,42 @@ public class PurchaseServlet extends HttpServlet {
 				}
 			}
 		}
+	}
+	
+	public List<Unit> getUnits(){
+		List<Unit> results = new LinkedList<Unit>();
+		
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		Unit unit = null;
+		
+		try {
+			conn = ds.getConnection();
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("SELECT id_jednostki, nazwa, kod, ilosc_ulamk_mianownik FROM jednostki_produktu");
+			while(rs.next()){
+				unit = new Unit();
+				unit.setId(rs.getLong(1));
+				unit.setName(rs.getString(2));
+				unit.setQuantityDenominator(rs.getShort(3));
+				unit.setCode(rs.getString(4));
+				results.add(unit);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if(conn!=null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return results;
 	}
 }

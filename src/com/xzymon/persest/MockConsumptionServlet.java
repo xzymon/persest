@@ -22,7 +22,7 @@ import javax.sql.DataSource;
 
 import com.xzymon.persest.model.MockConsumption;
 import com.xzymon.persest.model.Product;
-import com.xzymon.persest.model.PurchasedProduct;
+import com.xzymon.persest.model.Purchase;
 import com.xzymon.persest.model.Store;
 
 /**
@@ -64,8 +64,6 @@ public class MockConsumptionServlet extends HttpServlet {
 		String ncd = request.getParameter("ncd");
 		String dc = request.getParameter("dc");
 		
-		Connection conn = null;
-		
 		if(ncp!=null && ncp!="" && ncnum!=null && ncnum!="" && ncden!=null && ncden!="" && ncpri!=null && ncpri!="" && ncd!=null && ncd!=""){
 			try{
 				Long l_ncp = Long.decode(ncp);
@@ -76,47 +74,25 @@ public class MockConsumptionServlet extends HttpServlet {
 				Integer intPrice;
 				String[] split = null;
 				if(ncpri.contains(".")){
-					split = ncpri.split(".");
+					split = ncpri.split("\\.");
+					//System.out.format("if: %1$s splited into %2$d strings%n", ncpri, split.length);
 				} else {
 					split = new String[]{ncpri};
+					//System.out.format("else: split has length of %1$d, and split[0] is %2$s%n", split.length, split[0]);
 				}
 		
 				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-				Date d_npd = new Date(dateFormat.parse(ncd).getTime());
+				Date d_ncd = new Date(dateFormat.parse(ncd).getTime());
 				
-					intPrice = Integer.decode(split[0]);
-					if(split.length>1){
-						centPrice = Short.decode(split[1]);
-					}
-					conn = ds.getConnection();
-					PreparedStatement pstmt = conn.prepareStatement("INSERT INTO konsumpcja_wirtualna(id_produkt, licznik_skonsumowanej_czesci, mianownik_skonsumowanej_czesci, cena_calk, cena_ulamk, uwagi, data) VALUES(?, ?, ?, ?, ?, ?, ?)");
-					pstmt.setLong(1, l_ncp);
-					pstmt.setLong(2, i_ncnum);
-					pstmt.setLong(3, i_ncden);
-					pstmt.setInt(4, intPrice);
-					pstmt.setShort(5, centPrice);
-					pstmt.setString(6, ncc);
-					pstmt.setDate(7, d_npd);
-					pstmt.executeUpdate();
-				
-				
+				intPrice = Integer.decode(split[0]);
+				if(split.length>1){
+					centPrice = Short.decode(split[1]);
+				}
+				addMockConsumption(l_ncp, i_ncnum, i_ncden, intPrice, centPrice, ncc, d_ncd);
 			} catch (NumberFormatException ex){
 				ex.printStackTrace();
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-				if(conn!=null){
-					try {
-						conn.close();
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
 			}
 		}
 		
@@ -169,6 +145,32 @@ public class MockConsumptionServlet extends HttpServlet {
 		}
 		
 		return results;
+	}
+	
+	public void addMockConsumption(Long productId, Integer consumedNumerator, Integer consumedDenominator, Integer intPrice, Short centPrice, String comment, Date date){
+		Connection conn = null;
+		try{
+			conn = ds.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("INSERT INTO konsumpcja_wirtualna(id_produkt, licznik_skonsumowanej_czesci, mianownik_skonsumowanej_czesci, cena_calk, cena_ulamk, uwagi, data) VALUES(?, ?, ?, ?, ?, ?, ?)");
+			pstmt.setLong(1, productId);
+			pstmt.setLong(2, consumedNumerator);
+			pstmt.setLong(3, consumedDenominator);
+			pstmt.setInt(4, intPrice);
+			pstmt.setShort(5, centPrice);
+			pstmt.setString(6, comment);
+			pstmt.setDate(7, date);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if(conn!=null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	public List<Product> getProducts(){

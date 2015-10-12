@@ -67,6 +67,13 @@
 			</td>
 		</tr>
 		<tr>
+			<td>Quantity:</td>
+			<td><!-- i tu potrzebne jest aktualizowania min i step zgodnie jednostkami powiązanymi z produktem -->
+				<!-- zapewne można to zrobić albo używając JSF+AJAX albo AngularJS + REST -->
+				<!-- trzecia - być może najprostsza opcja: skrypt js mający załadowane dane o jednostkach i reagujacy na onChange (?) produktu -->
+				<input type="number" min="0.00" step=0.01 name="npp"></td>
+		</tr>
+		<tr>
 			<td>Price:</td>
 			<td><input type="number" min="0.00" step=0.01 name="npp"></td>
 		</tr>

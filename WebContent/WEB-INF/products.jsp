@@ -14,6 +14,8 @@
 			<th>id</th>
 			<th>category id</th>
 			<th>name</th>
+			<th>int quantity</th>
+			<th>part quantity</th>
 			<th>unit id</th>
 		</tr>
 	</thead>
@@ -23,10 +25,12 @@
 			<td>${product.id}</td>
 			<td>${product.categoryId}</td>
 			<td>${product.name}</td>
+			<td>${product.intQuantity}</td>
+			<td>${product.partQuantityNumerator}</td>
 			<td>${product.unitId}</td>
 			<td>
 				<form method="post" action="">
-					<input type="hidden" name="du" value="${unit.id}">
+					<input type="hidden" name="dp" value="${product.id}">
 					<input type="submit" value="Delete">
 				</form>
 			</td>
@@ -56,6 +60,10 @@
 		<tr>
 			<td>Name:</td>
 			<td><input type="text" name="npn"></td>
+		</tr>
+		<tr>
+			<td>Quantity:</td>
+			<td><input type="number" name="npq" min="0" step="0.01"></td>
 		</tr>
 		<tr>
 			<td>Unit:</td>

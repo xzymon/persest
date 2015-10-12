@@ -4,6 +4,7 @@ public class Unit {
 	private Long id;
 	private String name;
 	private String code;
+	private Short quantityDenominator;
 
 	public Long getId() {
 		return id;
@@ -24,6 +25,14 @@ public class Unit {
 			throw new IllegalStateException("The name parameter too long: "
 					+ name.length());
 		}
+	}
+	
+	public Short getQuantityDenominator() {
+		return quantityDenominator;
+	}
+
+	public void setQuantityDenominator(Short quantityDenominator) {
+		this.quantityDenominator = quantityDenominator;
 	}
 
 	public String getCode() {

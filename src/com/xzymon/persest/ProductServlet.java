@@ -58,14 +58,34 @@ public class ProductServlet extends HttpServlet {
 		String npci = request.getParameter("npci");
 		String npn = request.getParameter("npn");
 		String npu = request.getParameter("npu");
+		String npq = request.getParameter("npq");
+		String dp = request.getParameter("dp");
 		
-		if(npci != null && npci != "" && npn != null && npn != "" && npu != null && npu != ""){
+		if(npci != null && npci != "" && npn != null && npn != "" && npu != null && npu != "" && npq != null && npq != ""){
+			String[] split = npq.split("\\.");
+			if(split.length>0){
+				try{
+					Long l_ncid = Long.decode(npci);
+					Long l_ncu = Long.decode(npu);
+					Integer i_npq;
+					Short s_npq = 0;
+					i_npq = Integer.decode(split[0]);
+					if(split.length>1){
+						s_npq = Short.decode(split[1]);
+					}
+					addProduct(l_ncid, npn, i_npq, s_npq, l_ncu);
+				} catch(NumberFormatException ex){
+					ex.printStackTrace();
+				}
+			}
+		}
+		
+		if(dp!=null && dp!=""){
 			try{
-				Long l_ncid = Long.decode(npci);
-				Long l_ncu = Long.decode(npu);
-				addProduct(l_ncid, npn, l_ncu);
-			} catch(NumberFormatException ex){
-				
+				Long l_dp = Long.decode(dp);
+				deleteProduct(l_dp);
+			} catch (NumberFormatException ex){
+				ex.printStackTrace();
 			}
 		}
 		
@@ -110,7 +130,7 @@ public class ProductServlet extends HttpServlet {
 		return results;
 	}
 	
-	public void addProduct(Long categoryId, String name, Long unitId){
+	public void addProduct(Long categoryId, String name, Integer intQuantity, Short partQuantityNumerator,  Long unitId){
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -184,12 +204,13 @@ public class ProductServlet extends HttpServlet {
 		try {
 			conn = ds.getConnection();
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT id_jednostki, nazwa, kod FROM jednostki_produktu");
+			rs = stmt.executeQuery("SELECT id_jednostki, nazwa, kod, ilosc_ulamk_mianownik FROM jednostki_produktu");
 			while(rs.next()){
 				unit = new Unit();
 				unit.setId(rs.getLong(1));
 				unit.setName(rs.getString(2));
-				unit.setCode(rs.getString(3));
+				unit.setQuantityDenominator(rs.getShort(3));
+				unit.setCode(rs.getString(4));
 				results.add(unit);
 			}
 		} catch (SQLException e) {
@@ -209,5 +230,27 @@ public class ProductServlet extends HttpServlet {
 		return results;
 	}
 	
-	
+	public void deleteProduct(Long id){
+		Connection conn = null;
+		
+		try {
+			conn = ds.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("DELETE FROM produkty WHERE id_produkt=?");
+			pstmt.setLong(1, id);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if(conn!=null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
 }
